@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coded10X | Seduction. Motion. Conversion.</title>
+
+    <!-- SEO & Social -->
+    <meta name="description" content="Coded10X is a luxury creative agency in Austin, TX. We Don't Chase Attention. We Command It.">
+    <meta property="og:title" content="Coded10X | Seduction. Motion. Conversion.">
+    <meta property="og:description" content="Established MMXXVI. Cinematic digital experiences that command authority.">
+    <meta property="og:type" content="website">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap" rel="stylesheet">
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <style>
+        :root {
+            --navy: #0A0F2D;
+            --rose: #F5B895;
+            --white: #FAFAFA;
+            --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html.lenis { height: auto; }
+        body { 
+            background-color: var(--navy); 
+            color: var(--white); 
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        body.js-enabled { cursor: none; }
+        @media (pointer: coarse) { body, body.js-enabled { cursor: auto; } #cursor, #cursor-follower { display: none; } }
+
+        #cursor { position: fixed; width: 8px; height: 8px; background: var(--rose); border-radius: 50%; z-index: 10001; pointer-events: none; mix-blend-mode: difference; }
+        #cursor-follower { 
+            position: fixed; width: 40px; height: 40px; border: 1px solid rgba(245, 184, 149, 0.3); 
+            border-radius: 50%; z-index: 10000; pointer-events: none;
+            transition: transform 0.3s var(--ease-cinematic), background 0.3s;
+        }
+        #cursor-follower.active { transform: scale(1.8); background: rgba(245, 184, 149, 0.1); border-color: var(--rose); }
+        
+        .film-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; pointer-events: none; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            backface-visibility: hidden;
+        }
+
+        section { min-height: 100svh; padding: 12svh 8%; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .italic { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; }
+
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 2001; mix-blend-mode: exclusion; }
+        .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; letter-spacing: 5px; text-decoration: none; color: white; }
+        .menu-toggle { cursor: pointer; display: flex; flex-direction: column; gap: 8px; z-index: 2001; border: none; background: none; }
+        .menu-toggle span { width: 30px; height: 1px; background: var(--white); display: block; transition: 0.3s; }
+
+        #full-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100svh; 
+            background: var(--navy); z-index: 2000; display: flex; align-items: center; 
+            justify-content: center; transform: translateY(-100%); transition: transform 0.7s var(--ease-cinematic);
+        }
+        #full-menu.is-active { transform: translateY(0); }
+        .menu-nav { list-style: none; text-align: center; }
+        .menu-nav a { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 8vw, 5rem); color: var(--white); text-decoration: none; line-height: 1.2; display: block; padding: 1rem; transition: 0.3s; }
+
+        /* Hero */
+        .hero { text-align: center; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 10vw, 8.5rem); font-weight: 900; line-height: 0.85; }
+        .tagline { letter-spacing: 10px; margin-bottom: 2.5rem; opacity: 0.5; font-size: 0.7rem; }
+
+        /* Ticker */
+        .logo-ticker { width: 100%; overflow: hidden; padding: 3rem 0; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(245, 184, 149, 0.1); border-bottom: 1px solid rgba(245, 184, 149, 0.1); }
+        .ticker-wrapper { display: flex; white-space: nowrap; animation: ticker-scroll 35s linear infinite; width: fit-content; }
+        .ticker-wrapper svg { height: 25px; margin: 0 4rem; opacity: 0.4; filter: grayscale(1) brightness(2); }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Metrics */
+        .metrics-section { text-align: center; }
+        .metric-item { margin-bottom: 8svh; }
+        .metric-number { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 12vw, 7rem); color: var(--rose); font-weight: 900; line-height: 1; display: block; }
+
+        /* Services Responsive Grid */
+        .service-row { padding: 4rem 0; border-bottom: 1px solid rgba(245, 184, 149, 0.1); display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 768px) {
+            .service-row { grid-template-columns: 1fr 1.5fr; gap: 3rem; }
+        }
+        .service-row h3 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; }
+        .service-desc { opacity: 0.7; font-size: 0.95rem; line-height: 1.8; }
+
+        /* Testimonials */
+        .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 5svh; }
+        @media (min-width: 768px) {
+            .testimonials-grid { grid-template-columns: 1fr 1fr; gap: 5rem; }
+        }
+        .quote { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.6; margin-bottom: 1.5rem; }
+
+        /* Contact Grid */
+        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        @media (min-width: 900px) {
+            .contact-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Buttons & Inputs */
+        .input-group { position: relative; margin-bottom: 2.5rem; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 0; color: var(--white); font-family: 'Montserrat'; font-size: 0.9rem; outline: none; appearance: none;
+        }
+        .btn-luxury { 
+            background: transparent; border: 1px solid var(--rose); color: var(--rose); 
+            padding: 1.2rem 2.8rem; border-radius: 50px; cursor: pointer; 
+            transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; text-decoration: none; display: inline-block;
+        }
+        .btn-luxury:hover { background: var(--rose); color: var(--navy); }
+
+        /* Footer Responsive */
+        footer { padding: 10svh 8% 5svh; background: #070a1f; display: grid; grid-template-columns: 1fr; gap: 3rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        @media (min-width: 768px) {
+            footer { grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem; }
+        }
+        footer h4 { font-size: 0.7rem; letter-spacing: 3px; color: var(--rose); margin-bottom: 2rem; text-transform: uppercase; }
+        footer ul { list-style: none; }
+        footer ul li { margin-bottom: 1rem; }
+        footer ul li a { color: var(--white); opacity: 0.5; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        .legal-bottom { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 1rem; justify-content: space-between; padding-top: 5svh; opacity: 0.2; font-size: 0.6rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        @media (min-width: 768px) {
+            .legal-bottom { flex-direction: row; }
+        }
+
+        @media (max-width: 900px) {
+            section { padding: 10svh 5%; }
+            .hero h1 { font-size: 15vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="film-grain"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <nav>
+        <a href="#" class="logo">CODED10X</a>
+        <button class="menu-toggle" id="toggleBtn" aria-label="Open Menu">
+            <span></span>
+            <span style="width: 20px; align-self: flex-end; margin-top: 4px;"></span>
+        </button>
+    </nav>
+
+    <div id="full-menu">
+        <ul class="menu-nav">
+            <li><a href="#services" class="nav-link">The Force</a></li>
+            <li><a href="#testimonials" class="nav-link">Evidence</a></li>
+            <li><a href="#contact" class="nav-link">Inquire</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section class="hero">
+            <p class="tagline split">ESTABLISHED MMXXVI</p>
+            <h1 class="split">
+                We Don't Chase<br>
+                <span class="italic">Attention.</span><br>
+                We Command It.
+            </h1>
+            <div style="margin-top: 4rem;">
+                <a href="#contact" class="btn-luxury">Begin The Motion</a>
+            </div>
+        </section>
+
+        <div class="logo-ticker" aria-hidden="true">
+            <div class="ticker-wrapper">
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">FORTUNE</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">VANTAGE</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">AESTAS</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">MODERN</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">CODED10X</text></svg>
+                <!-- Dope Loop -->
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">FORTUNE</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">VANTAGE</text></svg>
+                <svg viewBox="0 0 100 40" width="120"><text y="25" fill="currentColor" font-weight="900">AESTAS</text></svg>
+            </div>
+        </div>
+
+        <section class="metrics-section">
+            <div class="metric-item">
+                <span class="metric-number counter" data-target="20" data-prefix="$" data-suffix="M+">0</span>
+                <span class="metric-label">Revenue Generated</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-number counter" data-target="150" data-suffix="%">0</span>
+                <span class="metric-label">Avg. Lead Increase</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-number counter" data-target="4.9" data-suffix="/5">0</span>
+                <span class="metric-label">Client Rating</span>
+            </div>
+        </section>
+
+        <section id="services">
+            <h2 class="italic split" style="font-size: 3rem; margin-bottom: 5svh;">The Force</h2>
+            
+            <div class="service-row">
+                <h3 class="split">Brand Identity &<br>Creative Strategy</h3>
+                <div class="service-desc split">
+                    We develop visual systems that command instant authority. By blending color theory with market positioning, we ensure your brand <b>hooks the target audience</b> within the first seconds of exposure.
+                </div>
+            </div>
+
+            <div class="service-row">
+                <h3 class="split">Full-Stack<br>Web Development</h3>
+                <div class="service-desc split">
+                    Cinematic front-ends meet heavy-duty infrastructure. Our builds are SEO-optimized, ultra-responsive, and engineered to <b>minimize friction in the conversion funnel.</b>
+                </div>
+            </div>
+
+            <div class="service-row">
+                <h3 class="split">Direct-Response<br>Copywriting</h3>
+                <div class="service-desc split">
+                    Words that sell. We craft narratives that guide the user from curiosity to surrender, using psychological triggers that <b>maximize ROI on every visitor</b>.
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <h2 class="split" style="letter-spacing: 5px; font-size: 0.7rem; opacity: 0.5; text-transform: uppercase; margin-bottom: 5svh;">Voices of Authority</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-item">
+                    <p class="quote split">"Coded10X didn't just build a website; they built a revenue machine. Our inbound lead volume tripled within 60 days of launch."</p>
+                    <p class="attribution split">— Sarah Jenkins, CEO of Aestas Modern</p>
+                </div>
+                <div class="testimonial-item">
+                    <p class="quote split">"The most sophisticated design team in the US. Their ability to balance cinematic art with hard conversion data is unparalleled."</p>
+                    <p class="attribution split">— Marcus Thorne, Director at Vantage Tech</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-grid">
+                <div>
+                    <h2 class="split" style="font-size: 4rem; line-height: 1;">Ready to<br><span class="italic">Surrender?</span></h2>
+                    <p class="split" style="margin-top: 2rem; opacity: 0.6; line-height: 1.8;">Stop chasing. Start commanding. Our team is currently accepting 2 more partners for Austin and beyond.</p>
+                </div>
+                <div>
+                    <form id="coded10xForm">
+                        <div class="input-group">
+                            <input type="text" id="name" name="name" required>
+                            <label for="name">Your Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" id="email" name="email" required>
+                            <label for="email">Email Address</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="url" id="website" name="website" required>
+                            <label for="website">Company Website</label>
+                        </div>
+                        <div class="input-group">
+                            <select id="budget" name="budget" required>
+                                <option value="" disabled selected></option>
+                                <option value="5-10">$5k – $10k</option>
+                                <option value="10-25">$10k – $25k</option>
+                                <option value="25plus">$25k+</option>
+                            </select>
+                            <label for="budget">Estimated Monthly Budget</label>
+                        </div>
+                        <div class="input-group">
+                            <textarea id="message" name="message" rows="2" required></textarea>
+                            <label for="message">The Vision...</label>
+                        </div>
+                        <div class="cta-container">
+                            <button type="submit" class="btn-luxury">Send Pulse</button>
+                        </div>
+                        <div id="formFeedback" style="margin-top: 1rem; color: var(--rose); font-size: 0.8rem;"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>
+                <div class="logo" style="margin-bottom: 2rem;">CODED10X</div>
+                <p style="opacity: 0.5; font-size: 0.8rem; line-height: 1.8; max-width: 300px;">
+                    Austin, Texas | Global Operations<br>
+                    Crafting digital experiences that command authority and drive conversion.
+                </p>
+            </div>
+            <div>
+                <h4>Direct Access</h4>
+                <ul>
+                    <li><a href="#services">Our Force</a></li>
+                    <li><a href="#testimonials">The Evidence</a></li>
+                    <li><a href="mailto:coded10x@proton.me">coded10x@proton.me</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Social Presence</h4>
+                <ul>
+                    <li><a href="#" target="_blank">LinkedIn</a></li>
+                    <li><a href="#" target="_blank">X (Twitter)</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">ADA Compliance</a></li>
+                </ul>
+            </div>
+            <div class="legal-bottom">
+                <div>© <span id="year"></span> CODED10X. ALL RIGHTS RESERVED.</div>
+                <div>Austin · GLOBAL · CODED10X</div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.body.classList.add('js-enabled');
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // Optimized Lenis + GSAP Sync
+        const lenis = new Lenis();
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // Optimized Cursor
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        const interactives = document.querySelectorAll('a, button, .input-group input, .input-group select, .input-group textarea');
+
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+                gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
+            });
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => follower.classList.add('active'));
+                el.addEventListener('mouseleave', () => follower.classList.remove('active'));
+            });
+        }
+
+        // Animated Text Logic
+        document.querySelectorAll('.split').forEach(target => {
+            const split = new SplitType(target, { types: 'chars, words' });
+            gsap.set(split.chars, { willChange: "transform, opacity" });
+            gsap.from(split.chars, {
+                y: 30, opacity: 0, stagger: 0.01, duration: 1, ease: "expo.out",
+                scrollTrigger: { trigger: target, start: "top 95%" }
+            });
+        });
+
+        // Menu Logic
+        const toggleBtn = document.getElementById('toggleBtn');
+        const fullMenu = document.getElementById('full-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        toggleBtn.addEventListener('click', () => {
+            fullMenu.classList.toggle('is-active');
+            const spans = toggleBtn.querySelectorAll('span');
+            if(fullMenu.classList.contains('is-active')) {
+                gsap.to(spans[0], {y: 9, rotate: 45});
+                gsap.to(spans[1], {rotate: -45, width: 30});
+            } else {
+                gsap.to(spans[0], {y: 0, rotate: 0});
+                gsap.to(spans[1], {rotate: 0, width: 20});
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                fullMenu.classList.remove('is-active');
+                gsap.to(toggleBtn.querySelectorAll('span')[0], {y: 0, rotate: 0});
+                gsap.to(toggleBtn.querySelectorAll('span')[1], {rotate: 0, width: 20});
+            });
+        });
+
+        // Counter Animation
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-target'));
+            const prefix = counter.getAttribute('data-prefix') || '';
+            const suffix = counter.getAttribute('data-suffix') || '';
+            const decimals = target % 1 !== 0 ? 1 : 0;
+            const countObj = { val: 0 };
+            
+            gsap.to(countObj, {
+                val: target, duration: 2.5, ease: "power3.out",
+                scrollTrigger: { trigger: counter, start: "top 85%" },
+                onUpdate: () => { counter.innerText = prefix + countObj.val.toFixed(decimals) + suffix; }
+            });
+        });
+
+        // Form Submission
+        document.getElementById('coded10xForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.btn-luxury');
+            const feedback = document.getElementById('formFeedback');
+            btn.innerText = "TRANSMITTING...";
+            setTimeout(() => {
+                gsap.to(e.target, {opacity: 0, duration: 0.5, onComplete: () => {
+                    e.target.style.display = 'none';
+                    feedback.innerHTML = "<h3 class='italic' style='font-size: 2rem;'>SIGNAL RECEIVED.</h3><p>Expect a pulse within 24 hours.</p>";
+                }});
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

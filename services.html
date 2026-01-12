@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | The Force of CODED10X</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <style>
+        :root { 
+            --navy: #0A0F2D; 
+            --rose: #F5B895; 
+            --white: #FAFAFA; 
+            --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+
+        body { background: var(--navy); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* Performance Optimized Grain */
+        .film-grain { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 9999; pointer-events: none; opacity: 0.04; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            backface-visibility: hidden;
+        }
+
+        nav { padding: 2rem 8%; mix-blend-mode: exclusion; }
+        .logo { color: white; text-decoration: none; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1.2rem; }
+
+        /* Responsive Hero */
+        .services-hero { padding: 15svh 8% 10svh; text-align: left; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 12vw, 8rem); font-weight: 900; line-height: 0.85; margin: 0; }
+        .hero-title span { font-style: italic; color: var(--rose); }
+
+        /* Responsive Service List */
+        #services-list { padding: 0 8% 10svh; }
+        
+        .service-row { 
+            padding: 4rem 0; 
+            border-bottom: 1px solid rgba(245, 184, 149, 0.1); 
+            display: grid; 
+            grid-template-columns: 1fr; /* Mobile first: 1 column */
+            gap: 1.5rem; 
+        }
+
+        /* Desktop Grid */
+        @media (min-width: 768px) {
+            .service-row { grid-template-columns: 1fr 1.5fr; gap: 3rem; padding: 6rem 0; }
+        }
+
+        .service-row h3 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
+            line-height: 1; 
+            color: var(--rose); 
+            margin: 0;
+        }
+
+        .service-desc { 
+            opacity: 0.7; 
+            font-size: clamp(1rem, 1.2vw, 1.15rem); 
+            line-height: 1.8; 
+            align-self: center; 
+        }
+
+        footer { padding: 5svh 8%; text-align: center; opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="film-grain"></div>
+    
+    <nav>
+        <a href="index.html" class="logo">CODED10X</a>
+    </nav>
+
+    <main>
+        <section class="services-hero">
+            <h1 class="hero-title split">
+                Engineered<br><span>Results.</span>
+            </h1>
+        </section>
+
+        <section id="services-list">
+            <div class="service-row">
+                <h3 class="split">Digital<br>Architecture</h3>
+                <div class="service-desc split">We build high-performance, cinematic websites designed for elite brands in Austin, Texas and global operations. Every line of code is optimized for speed, motion, and search dominance.</div>
+            </div>
+
+            <div class="service-row">
+                <h3 class="split">Conversion<br>Psychology</h3>
+                <div class="service-desc split">Using direct-response copywriting and psychological triggers, we guide your visitors from curiosity to conversion, ensuring every pulse leads to ROI.</div>
+            </div>
+
+            <div class="service-row">
+                <h3 class="split">Brand<br>Identity</h3>
+                <div class="service-desc split">Visual systems that command instant authority. We don't just design; we position your brand to dominate the market perception from the first second.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Austin, Texas &bull; Established 2024
+    </footer>
+
+    <script>
+        // Smooth Scroll Initialization
+        const lenis = new Lenis();
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // Cinematic Text Animation
+        document.querySelectorAll('.split').forEach(target => {
+            const split = new SplitType(target, { types: 'chars, words' });
+            
+            gsap.from(split.chars, {
+                y: 20, 
+                opacity: 0, 
+                stagger: 0.01, 
+                duration: 0.8, 
+                ease: "power4.out",
+                scrollTrigger: { 
+                    trigger: target, 
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+    </script>
+</body>
+</html>

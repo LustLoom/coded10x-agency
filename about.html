@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | The Authority of CODED10X</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <style>
+        :root { 
+            --navy: #0A0F2D; 
+            --rose: #F5B895; 
+            --white: #FAFAFA; 
+        }
+
+        body { background: var(--navy); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* Performance Optimized Grain */
+        .film-grain { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 9999; pointer-events: none; opacity: 0.04; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            backface-visibility: hidden;
+        }
+
+        nav { padding: 2rem 8%; mix-blend-mode: exclusion; }
+        .logo { color: white; text-decoration: none; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1.2rem; }
+
+        .about-content { max-width: 900px; margin: 0 auto; padding: 10svh 8% 15svh; }
+        
+        .label { letter-spacing: 10px; opacity: 0.5; font-size: 0.6rem; margin-bottom: 2rem; display: block; }
+        
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: 3rem; line-height: 1.1; }
+        h1 span { font-style: italic; color: var(--rose); }
+
+        .vision-text { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(1.4rem, 3vw, 2.2rem); 
+            line-height: 1.4; 
+            margin-bottom: 4rem; 
+            color: var(--white);
+        }
+
+        .vision-text span { border-bottom: 1px solid var(--rose); }
+
+        p { opacity: 0.7; line-height: 1.8; font-size: 1.1rem; margin-bottom: 2rem; }
+
+        /* Responsive Stats Grid */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 3rem; 
+            margin-top: 8svh; 
+            padding-top: 5svh;
+            border-top: 1px solid rgba(245, 184, 149, 0.1);
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); text-align: center; }
+        }
+
+        .stat-item b { 
+            display: block; 
+            font-size: clamp(2.5rem, 5vw, 3.5rem); 
+            color: var(--rose); 
+            font-family: 'Playfair Display', serif; 
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item span { font-size: 0.7rem; letter-spacing: 3px; opacity: 0.5; text-transform: uppercase; }
+
+        footer { padding: 5svh 8%; text-align: center; opacity: 0.3; font-size: 0.7rem; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="film-grain"></div>
+    
+    <nav>
+        <a href="index.html" class="logo">CODED10X</a>
+    </nav>
+
+    <main class="about-content">
+        <span class="label split">ESTABLISHED MMXXVI</span>
+        
+        <h1 class="split">We are the <span>Silent Force.</span></h1>
+        
+        <div class="vision-text split">
+            CODED10X is a growth-driven creative agency based in <span>Austin, Texas</span>. We combine the artistry of cinematic design with the precision of performance engineering.
+        </div>
+
+        <p class="split">Our philosophy is rooted in the belief that luxury is found in performance. We don't use templates. We don't use shortcuts. We build bespoke digital assets that work harder than you do.</p>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <b class="split">$20M+</b>
+                <span class="split">Revenue Led</span>
+            </div>
+            <div class="stat-item">
+                <b class="split">150%</b>
+                <span class="split">Avg Growth</span>
+            </div>
+            <div class="stat-item">
+                <b class="split">4.9/5</b>
+                <span class="split">Authority</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Austin, Texas &bull; Creative Engineering
+    </footer>
+
+    <script>
+        // Smooth Scroll Initialization
+        const lenis = new Lenis();
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // Text Animation Logic
+        document.querySelectorAll('.split').forEach(target => {
+            const split = new SplitType(target, { types: 'chars, words' });
+            
+            gsap.from(split.chars, {
+                y: 20, 
+                opacity: 0, 
+                stagger: 0.005, 
+                duration: 1, 
+                ease: "power4.out",
+                scrollTrigger: { 
+                    trigger: target, 
+                    start: "top 95%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+    </script>
+</body>
+</html>
